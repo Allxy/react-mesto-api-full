@@ -1,4 +1,6 @@
 import CastError from 'mongoose/lib/error/cast.js';
+import ValidationError from 'mongoose/lib/error/validation.js';
+
 import CardModel from '../models/card.model.js';
 import { CARD_NOT_FOUND, CREATED_CODE, NO_RIGHTS } from '../utils/constants.js';
 import { BadRequestError, ForbiddenError, NotFoundError } from '../utils/errors/index.js';
@@ -10,7 +12,11 @@ async function createCard(request, response, next) {
     card = await card.populate('owner likes');
     response.status(CREATED_CODE).send(card);
   } catch (error) {
-    next(error);
+    if (error instanceof ValidationError) {
+      next(new BadRequestError(error.message));
+    } else {
+      next(error);
+    }
   }
 }
 
