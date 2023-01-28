@@ -7,7 +7,6 @@ import auth from '../middlewares/auth.middleware.js';
 import NotFoundError from '../utils/errors/NotFoundError.js';
 
 const router = Router();
-
 router.use('/', authRouter);
 router.use('/users', auth, userRouter);
 router.use('/cards', auth, cardsRouter);

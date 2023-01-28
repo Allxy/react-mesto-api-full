@@ -43,6 +43,13 @@ async function start() {
     app.use(helmet());
     app.use(json());
     app.use(cors(corsOptions));
+
+    app.use('/crash-test', () => {
+      setTimeout(()=> {
+        throw Error("Server crash.")
+      }, 100)
+    })
+
     app.use('/', router);
     app.use(errorLog);
     app.use(celebrateErrorHandler());
