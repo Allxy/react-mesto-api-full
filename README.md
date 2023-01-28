@@ -3,6 +3,6 @@
   
 https://github.com/Allxy/react-mesto-api-full
 
-IP  51.250.90.164
-Frontend  https://testo-mesto.nomoredomainsclub.ru
-Backend  https://mesto-testo.nomoredomainsclub.ru
+IP  51.250.90.164 \
+Frontend  https://testo-mesto.nomoredomainsclub.ru \
+Backend  https://mesto-testo.nomoredomainsclub.ru \
