@@ -62,7 +62,7 @@ class Api {
   }
 
   setLikeStatus(cardId, status) {
-    if (status) return this._fetch("cards/" + cardId + "/likes", "PUT");
+    if (status) return this._fetch("/cards/" + cardId + "/likes", "PUT");
     return this._fetch("/cards/" + cardId + "/likes", "DELETE");
   }
 
