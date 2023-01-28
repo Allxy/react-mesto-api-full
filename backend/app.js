@@ -4,13 +4,12 @@ import dotenv from 'dotenv';
 import { errors as celebrateErrorHandler } from 'celebrate';
 import helmet from 'helmet';
 import cors from 'cors';
-import {
-  defaultErrorHandler, httpErrorHandler, authErrorHandler, mongoErrorHandler, errorLog,
-} from './errors/index.js';
 import router from './routes/index.js';
 import requestLogger from './middlewares/reqlog.middleware.js';
 import limiter from './middlewares/limiter.middleware.js';
 import logger from './utils/logger.js';
+import errorHandler from './middlewares/error.middleware.js';
+import errorLog from './middlewares/errlog.middleware.js';
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -48,15 +47,12 @@ async function start() {
       setTimeout(() => {
         throw new Error('Сервер сейчас упадёт');
       }, 0);
-    }); 
+    });
 
     app.use('/', router);
     app.use(errorLog);
     app.use(celebrateErrorHandler());
-    app.use(authErrorHandler);
-    app.use(httpErrorHandler);
-    app.use(mongoErrorHandler);
-    app.use(defaultErrorHandler);
+    app.use(errorHandler);
 
     app.listen(PORT, () => {
       logger.info(`Server starts at port ${PORT}`);

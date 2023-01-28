@@ -1,6 +1,7 @@
+import CastError from 'mongoose/lib/error/cast.js';
 import CardModel from '../models/card.model.js';
 import { CARD_NOT_FOUND, CREATED_CODE, NO_RIGHTS } from '../utils/constants.js';
-import { ForbiddenError, NotFoundError } from '../utils/errors/index.js';
+import { BadRequestError, ForbiddenError, NotFoundError } from '../utils/errors/index.js';
 
 async function createCard(request, response, next) {
   try {
@@ -34,7 +35,11 @@ async function deleteCard(request, response, next) {
     await card.delete();
     response.send(card);
   } catch (error) {
-    next(error);
+    if (error instanceof CastError) {
+      next(new BadRequestError(error.message));
+    } else {
+      next(error);
+    }
   }
 }
 
@@ -51,7 +56,11 @@ async function toggleLike(action, request, response, next) {
     }
     response.send(card);
   } catch (error) {
-    next(error);
+    if (error instanceof CastError) {
+      next(new BadRequestError(error.message));
+    } else {
+      next(error);
+    }
   }
 }
 

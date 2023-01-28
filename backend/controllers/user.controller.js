@@ -1,6 +1,8 @@
+import CastError from 'mongoose/lib/error/cast.js';
+import MongooseError from 'mongoose/lib/error/mongooseError.js';
 import UserModel from '../models/user.model.js';
 import { USER_NOT_FOUND } from '../utils/constants.js';
-import { NotFoundError } from '../utils/errors/index.js';
+import { BadRequestError, NotFoundError } from '../utils/errors/index.js';
 
 async function getAllUsers(request, response, next) {
   try {
@@ -19,7 +21,11 @@ async function getUser(request, response, next) {
     }
     response.send(user);
   } catch (error) {
-    next(error);
+    if (error instanceof CastError) {
+      next(new BadRequestError(error.message));
+    } else {
+      next(error);
+    }
   }
 }
 
@@ -46,7 +52,11 @@ async function updateUser(request, response, next) {
     }
     response.send(user);
   } catch (error) {
-    next(error);
+    if (error instanceof MongooseError) {
+      next(new BadRequestError(error.message));
+    } else {
+      next(error);
+    }
   }
 }
 

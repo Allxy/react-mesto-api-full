@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { AUTH_REQUIRED, BAD_TOKEN_TYPE } from '../utils/constants.js';
+import { AUTH_REQUIRED, BAD_TOKEN, BAD_TOKEN_TYPE } from '../utils/constants.js';
 import { UnauthorizedError } from '../utils/errors/index.js';
 
 export default function auth(request, resource, next) {
@@ -19,7 +19,11 @@ export default function auth(request, resource, next) {
 
     request.user = payload;
   } catch (error) {
-    next(error);
+    if (error instanceof jwt.JsonWebTokenError) {
+      next(new UnauthorizedError(BAD_TOKEN));
+    } else {
+      next(error);
+    }
   }
 
   next();

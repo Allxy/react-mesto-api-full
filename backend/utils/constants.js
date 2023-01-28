@@ -15,5 +15,6 @@ export const BAD_TOKEN = 'Bad token';
 export const BAD_TOKEN_TYPE = 'Bad token type';
 export const INTERNAL_ERROR = 'Something went wrong';
 export const NO_RIGHTS = 'You have no rights';
+export const BAD_ID = 'Invalid id';
 
 export const CREATED_CODE = 201;
