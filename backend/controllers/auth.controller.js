@@ -16,7 +16,7 @@ async function signup(request, response, next) {
 
     password = await bcrypt.hash(password, 10);
 
-    const user = await UserModel.create({ ...request.body, password });
+    const user = await UserModel.create({ ...request.body, email, password });
     response.status(CREATED_CODE).send(user.toObject({
       transform: (doc, res) => {
         delete res.password;
@@ -31,7 +31,7 @@ async function signup(request, response, next) {
 async function signin(request, response, next) {
   try {
     const { email, password } = request.body;
-    const user = await UserModel.findOne({ email }).select('+password');
+    const user = await UserModel.findOne({ email: email.toLowerCase() }).select('+password');
     if (user === null || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedError(AUTH_ERROR);
     }
