@@ -44,11 +44,11 @@ async function start() {
     app.use(json());
     app.use(cors(corsOptions));
 
-    app.use('/crash-test', () => {
-      setTimeout(()=> {
-        throw Error("Server crash.")
-      }, 100)
-    })
+    app.get('/crash-test', () => {
+      setTimeout(() => {
+        throw new Error('Сервер сейчас упадёт');
+      }, 0);
+    }); 
 
     app.use('/', router);
     app.use(errorLog);
